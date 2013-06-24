@@ -1,0 +1,23 @@
+{
+  "name": "nbin",
+  "version": "0.0.1",
+  "description": "execute local bin files to a module",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": "",
+  "keywords": [
+    "npm",
+    "bin",
+    ""
+  ],
+  "author": "Joseph Werle <joseph.werle@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "~1.11.0"
+  },
+  "dependencies": {
+    "commander": "~1.2.0"
+  }
+}
