@@ -73,7 +73,9 @@ function nbin (dir) {
  */
 
 nbin.bins = function (dir) {
-	return fs.readdirSync([dir, 'node_modules', '.bin'].join('/'));
+	var bins = [dir, 'node_modules', '.bin'].join('/');
+	if (isDirectory(bins)) return fs.readdirSync(bins);
+	else return [];
 }
 
 

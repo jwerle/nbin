@@ -42,9 +42,13 @@ program.command('ls')
 		puts('cwd:', cwd);
 		puts('.bin:', binpath);
 		puts()
-		bins.map(function (bin) {
-			puts('  o', bin, '('+ [binpath, bin].join('/') +')');
-		});
+		if (bins.length) {
+			bins.map(function (bin) {
+				puts('  o', bin, '('+ [binpath, bin].join('/') +')');
+			});
+		} else {
+			puts('  -', "no bins found");
+		}
 		puts();
 	});
 

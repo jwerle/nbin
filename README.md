@@ -3,6 +3,8 @@ nbin
 
 execute local bin files in a module
 
+[![Build Status](https://travis-ci.org/jwerle/nbin.png)](https://travis-ci.org/jwerle/nbin)
+
 ## install
 
 ```js
@@ -71,6 +73,22 @@ you can stop it the same way too
 $ nbin forever --args "stop bin/myapp"
 ```
 
+*NOTE:* you must escape certain characters like `-` with `\-` so arguments are passed properly
+
+#### ls
+
+list all bins found in your module
+
+```sh
+$ nbin ls
+
+  cwd: /Users/jwerle/repos/nbin
+  .bin: /Users/jwerle/repos/nbin/node_modules/.bin
+
+    o _mocha (/Users/jwerle/repos/nbin/node_modules/.bin/_mocha)
+    o mocha (/Users/jwerle/repos/nbin/node_modules/.bin/mocha)
+```
+
 ### programmatic
 
 `nbin` can be used programmatically too.
@@ -98,11 +116,11 @@ execute a `bin` on a given module directory with an optional arguments array and
 var stream = nbin(__dirname).exec('mocha')
 
 stream.on('data', function (chunk) {
-	// do something with chunk
+  // do something with chunk
 });
 
 stream.on('error', function () {
-	// handle error
+  // handle error
 });
 ```
 
