@@ -16,7 +16,7 @@ $ [sudo] npm install nbin -g
 `nbin(1)` allows you to execute the `bin` files found in `node_modules/.bin` from the command line without having to type the path explicitly
 
 ```sh
-$ nbin mocha mocha -a "\-R spec"
+$ nbin mocha -a "\-R spec"
 
 
   nbin(dir)
