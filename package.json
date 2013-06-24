@@ -1,6 +1,6 @@
 {
   "name": "nbin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "execute local bin files in a module",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,10 @@
     "npm",
     "bin"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jwerle/nbin.git"
+  },
   "author": "Joseph Werle <joseph.werle@gmail.com>",
   "license": "MIT",
   "devDependencies": {
