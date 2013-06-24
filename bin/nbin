@@ -5,9 +5,13 @@ var program = require('commander')
 	, pkg = require('../package')
 	, cwd = process.cwd()
 
+var cmds = [
+	'ls'
+];
+
 program.version(pkg.version)
 
-if (process.argv.length > 2 && !~process.argv[2].indexOf('-')) {
+if (process.argv.length > 2 && !~process.argv[2].indexOf('-') && !~cmds.indexOf(process.argv[2])) {
 	var args = process.argv.slice(2)
 		,	cmd = args[0]
 
@@ -16,12 +20,32 @@ if (process.argv.length > 2 && !~process.argv[2].indexOf('-')) {
 		.option('-a, --args [args]', "arguments to pass to bin")
 		.action(function (action) {
 			var args = action.args? [action.args] : []
-			nbin(cwd).exec(cmd, args).pipe(process.stdout)
+			try { nbin(cwd).exec(cmd, args).pipe(process.stdout); }
+			catch (e) { console.log(e.message); }
 		})
 
-} else {
+} else if (process.argv.length === 2) {
 	// push help to stack if no command being executed
 	process.argv.push('--help');
 }
+
+
+
+program.command('ls')
+	.description("list all bins found in module")
+	.action(function () {
+		var bins = nbin.bins(cwd)
+			,	binpath = [cwd, 'node_modules', '.bin'].join('/')
+			, puts = console.log.bind(console, ' ')
+		
+		puts();
+		puts('cwd:', cwd);
+		puts('.bin:', binpath);
+		puts()
+		bins.map(function (bin) {
+			puts('  o', bin, '('+ [binpath, bin].join('/') +')');
+		});
+		puts();
+	});
 
 program.parse(process.argv);
