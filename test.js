@@ -23,7 +23,7 @@ describe('nbin(dir)', function () {
 
 	});
 
-	describe('nbin(dir).exec(bin)', function () {
+	describe('nbin(dir).exec(bin, args)', function () {
 		it("should execute a given `bin` and return a stream", function (done) {
 			var stream = nbin(__dirname).exec('testbin')
 			assert(stream instanceof Stream);

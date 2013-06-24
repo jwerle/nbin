@@ -1,1 +1,27 @@
 #!/usr/bin/env node
+
+var program = require('commander')
+	, nbin = require('../')
+	, pkg = require('../package')
+	, cwd = process.cwd()
+
+program.version(pkg.version)
+
+if (process.argv.length > 2 && !~process.argv[2].indexOf('-')) {
+	var args = process.argv.slice(2)
+		,	cmd = args[0]
+
+	program.command(cmd)
+		.description(cmd)
+		.option('-a, --args [args]', "arguments to pass to bin")
+		.action(function (action) {
+			var args = action.args? [action.args] : []
+			nbin(cwd).exec(cmd, args).pipe(process.stdout)
+		})
+
+} else {
+	// push help to stack if no command being executed
+	process.argv.push('--help');
+}
+
+program.parse(process.argv);
