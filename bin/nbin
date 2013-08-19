@@ -15,14 +15,18 @@ if (process.argv.length > 2 && !~process.argv[2].indexOf('-') && !~cmds.indexOf(
 	var args = process.argv.slice(2)
 		,	cmd = args[0]
 
-	program.command(cmd)
+var c = program.command(cmd)
 		.description(cmd)
-		.option('-a, --args [args]', "arguments to pass to bin")
 		.action(function (action) {
-			var args = action.args? [action.args] : []
+			var args = action.args? [action.args] : process.argv.slice(process.argv.indexOf(cmd) + 1)
 			try { nbin(cwd).exec(cmd, args).pipe(process.stdout); }
 			catch (e) { console.log(e.message); }
-		})
+		});
+c.help = function () {}
+// overload unkown options
+c.unknownOption = function () {
+
+};
 
 } else if (process.argv.length === 2) {
 	// push help to stack if no command being executed
