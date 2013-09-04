@@ -5,9 +5,9 @@
  */
 
 var fs = require('fs')
-	,	exec = require('child_process').exec
-	, isArray = Array.isArray
-	, Writable = require('stream').Writable
+  , exec = require('child_process').exec
+  , isArray = Array.isArray
+  , Writable = require('stream').Writable
 
 
 /**
@@ -18,10 +18,7 @@ var fs = require('fs')
  */
 
 function isDirectory (filepath) {
-  try { 
-    fs.readdirSync(filepath)
-    return true;
-  } catch (e) { return false; }
+  return fs.statSync(filepath).isDirectory();
 }
 
 
@@ -33,7 +30,7 @@ function isDirectory (filepath) {
  */
 
 function isFile (filepath) {
-  try { 
+  try {
     if (!isDirectory(filepath) && fs.existsSync(filepath)) {
       return true;
     }
@@ -43,8 +40,8 @@ function isFile (filepath) {
 
 
 /**
- * executes a bin found in the 
- * relative `node_modules/.bin` directory 
+ * executes a bin found in the
+ * relative `node_modules/.bin` directory
  *
  * @api public
  * @param {String} dir
@@ -53,15 +50,15 @@ function isFile (filepath) {
 module.exports = nbin;
 module.exports.nbin = nbin;
 function nbin (dir) {
-	if (!isDirectory(dir)) throw new Error("invalid directory");
-	else if (!isDirectory([dir, 'node_modules'].join('/'))) throw new Error("failed to find `node_modules` directory");
+  if (!isDirectory(dir)) throw new Error("invalid directory");
+  else if (!isDirectory([dir, 'node_modules'].join('/'))) throw new Error("failed to find `node_modules` directory");
 
-	return {
-		bins: nbin.bins(dir),
-		exec: function (bin, args) {
-			return nbin.exec(dir, bin, args);
-		}
-	}
+  return {
+    bins: nbin.bins(dir),
+    exec: function (bin, args) {
+      return nbin.exec(dir, bin, args);
+    }
+  }
 }
 
 
@@ -73,9 +70,9 @@ function nbin (dir) {
  */
 
 nbin.bins = function (dir) {
-	var bins = [dir, 'node_modules', '.bin'].join('/');
-	if (isDirectory(bins)) return fs.readdirSync(bins);
-	else return [];
+  var bins = [dir, 'node_modules', '.bin'].join('/');
+  if (isDirectory(bins)) return fs.readdirSync(bins);
+  else return [];
 }
 
 
@@ -90,12 +87,13 @@ nbin.bins = function (dir) {
  */
 
 nbin.exec = function (dir, bin, args) {
-	var binpath = [dir, 'node_modules', '.bin', bin].join('/')
-	if (!isFile(binpath)) throw new Error("invalid `bin` file");
-	args = isArray(args)? args : ('string' === typeof args)? [args] : [];
-	var cmd = [binpath].concat(args).join(' ')
-	var child = exec(cmd, function (err) {
-		if (err) child.stdout.emit('error', err);
-	});
-	return child.stdout;
+  var binpath = [dir, 'node_modules', '.bin', bin].join('/')
+  if (!isFile(binpath)) throw new Error("invalid `bin` file");
+  args = isArray(args)? args : ('string' === typeof args)? [args] : [];
+  binpath = binpath.replace(/(\s)/, "\\ ");
+  var cmd = [binpath].concat(args).join(' ')
+  var child = exec(cmd, function (err) {
+    if (err) child.stdout.emit('error', err);
+  });
+  return child.stdout;
 }
