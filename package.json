@@ -1,6 +1,6 @@
 {
   "name": "nbin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "execute local bin files in a module",
   "main": "index.js",
   "scripts": {
